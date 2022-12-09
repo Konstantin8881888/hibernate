@@ -16,7 +16,8 @@ public interface ProductDAO
     void delete(Product product);
 
     void deleteById(long id);
-
     void deleteByTitle(String title);
+
+    List<User> getAllBuyers(Product product);
 
 }
