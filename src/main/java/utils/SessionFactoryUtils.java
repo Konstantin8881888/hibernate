@@ -15,7 +15,8 @@ public class SessionFactoryUtils
 
     public void init()
     {
-        try {
+        try
+        {
             Configuration configuration = new Configuration();
             configuration.configure("hibernate.cfg.xml");
             log.trace("Hibernate configuration loaded");

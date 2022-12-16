@@ -11,7 +11,7 @@ import java.util.List;
 @Log4j2
 public class ProductDAOImpl implements ProductDAO
 {
-    private SessionFactoryUtils sessionFactoryUtils;
+    private final SessionFactoryUtils sessionFactoryUtils;
 
     public ProductDAOImpl(SessionFactoryUtils sessionFactoryUtils)
     {
@@ -75,7 +75,7 @@ public class ProductDAOImpl implements ProductDAO
         {
             Session session = sessionFactoryUtils.getSession();
             session.beginTransaction();
-            List products = session.createQuery("select p from Product p").getResultList();
+            List<Product> products = session.createQuery("select p from Product p").getResultList();
             session.getTransaction().commit();
             return products;
         }
@@ -156,5 +156,26 @@ public class ProductDAOImpl implements ProductDAO
     {
         log.trace("DELETE PRODUCT BY TITLE");
         delete(findByTitle(title));
+    }
+
+    @Override
+    public List<User> getAllBuyers(Product product)
+    {
+        log.trace("GET ALL BUYERS");
+        List<User> buyers;
+        try
+        {
+            Session session = sessionFactoryUtils.getSession();
+            session.beginTransaction();
+            session.persist(product);
+            buyers = product.getUsers();
+            session.getTransaction().commit();
+        }
+        catch (Exception e)
+        {
+            log.error("DELETE PRODUCT  ERROR: " + e.getMessage());
+            buyers = null;
+        }
+        return buyers;
     }
 }

@@ -1,20 +1,29 @@
 package model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+import java.util.List;
+
+
+@Data
 @Entity(name = "Product")
 @Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "title")
-    String title;
+    private String title;
 
     @Column(name = "price")
-    int price;
+    private int price;
+
+    @ManyToMany
+    @JoinTable(name = "users_products", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 
     public Product()
     {
@@ -31,41 +40,5 @@ public class Product {
         this.id = id;
         this.title = title;
         this.price = price;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
-
-    public int getPrice()
-    {
-        return price;
-    }
-
-    public void setPrice(int price)
-    {
-        this.price = price;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Product{" + "id=" + id + ", title='" + title + '\'' + ", price=" + price + '}';
     }
 }
